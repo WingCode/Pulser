@@ -1,15 +1,13 @@
-import matplotlib.pyplot as plt
+import warnings
+
 import numpy as np
-import qutip
 
 from pulser import Pulse, Register, Sequence
 from pulser.devices import Chadoq2
-from pulser.simulation import Simulation
-from pulser.waveforms import (
-    BlackmanWaveform,
-    InterpolatedWaveform,
-    RampWaveform,
-)
+from pulser.waveforms import BlackmanWaveform, RampWaveform
+
+warnings.filterwarnings("ignore")
+
 
 # =============================================================================
 # ====                              ANTI FERRO                             ====
@@ -50,8 +48,11 @@ seq.add(rise, "ising")
 seq.add(sweep, "ising")
 seq.add(fall, "ising")
 
+print("=" * 80)
 print("Antiferromagnetic state")
+print()
 print(seq.abstract_repr())
+print()
 
 # fmt: off
 # import pdb; pdb.set_trace()
@@ -61,7 +62,19 @@ print(seq.abstract_repr())
 # ====                   ANTI FERRO + optimal control                      ====
 # =============================================================================
 
-# TODO
+# This sequence has been created using optimal control.
+# If you want to know more on the process, you can check
+# https://pulser.readthedocs.io/en/stable/tutorials/optimization.html
+
+seq = Sequence.deserialize(
+    '{"_build": true, "__module__": "pulser.sequence", "__name__": "Sequence", "__args__": [{"_build": true, "__module__": "pulser.register.register", "__name__": "Register", "__args__": [{"q0": [-10.468682577131819, -10.468682577131819], "q1": [-3.48956085904394, -10.468682577131819], "q2": [3.489560859043939, -10.468682577131819], "q3": [10.468682577131819, -10.468682577131819], "q4": [10.468682577131819, -3.48956085904394], "q5": [10.468682577131819, 3.489560859043939], "q6": [10.468682577131819, 10.468682577131819], "q7": [3.489560859043939, 10.468682577131819], "q8": [-3.48956085904394, 10.468682577131819], "q9": [-10.468682577131819, 10.468682577131819], "q10": [-10.468682577131819, 3.489560859043939], "q11": [-10.468682577131819, -3.48956085904394]}], "__kwargs__": {}}, {"_build": false, "__module__": "pulser.devices", "__name__": "Chadoq2"}], "__kwargs__": {}, "__version__": "0.5.1.dev", "calls": [["declare_channel", ["ising", "rydberg_global"], {"initial_target": null}], ["add", [{"_build": true, "__module__": "pulser.pulse", "__name__": "Pulse", "__args__": [{"_build": true, "__module__": "pulser.waveforms", "__name__": "InterpolatedWaveform", "__args__": [1000, {"_build": true, "__module__": "numpy", "__name__": "array", "__args__": [[1e-09, 11.405902685751728, 15.707947559985698, 15.707947559985698, 1e-09]], "__kwargs__": {}}], "__kwargs__": {"times": null, "interpolator": "PchipInterpolator"}}, {"_build": true, "__module__": "pulser.waveforms", "__name__": "InterpolatedWaveform", "__args__": [1000, {"_build": true, "__module__": "numpy", "__name__": "array", "__args__": [[-31.41592653589793, -31.41592653589793, 8.854273919304688, 28.115521932222876, 31.41592653589793]], "__kwargs__": {}}], "__kwargs__": {"times": null, "interpolator": "PchipInterpolator"}}, 0.0], "__kwargs__": {"post_phase_shift": 0.0}}, "ising"], {}]], "vars": {}, "to_build_calls": []}'
+)
+
+print("=" * 80)
+print("Antiferromagnetic state with optimal control")
+print()
+print(seq.abstract_repr())
+print()
 
 # =============================================================================
 # ====                        CZ + Bell state prep                         ====
@@ -103,5 +116,8 @@ seq.align("digital", "rydberg")
 seq.add(ry, "digital")
 seq.measure("digital")
 
+print("=" * 80)
 print("CZ + Bell state preparation")
+print()
 print(seq.abstract_repr())
+print()
